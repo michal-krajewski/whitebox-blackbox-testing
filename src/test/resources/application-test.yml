@@ -1,0 +1,2 @@
+notification:
+  url: http://localhost:8182/notification

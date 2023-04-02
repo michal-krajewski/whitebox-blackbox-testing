@@ -1,5 +1,6 @@
 package pl.byteit.user;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +31,18 @@ public class UserController {
 		userService.activateUser(input.token());
 	}
 
+	@GetMapping("/current")
+	public UserDto getCurrentUserData() {
+		return userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
+				.map(user -> new UserDto(user.getUsername()))
+				.orElseThrow();
+	}
+
 	public record ActivateUserInput(UUID token){
+	}
+
+	public record UserDto(String username) {
+
 	}
 
 }
