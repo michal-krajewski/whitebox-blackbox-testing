@@ -9,8 +9,12 @@ import pl.byteit.notification.NotificationClient;
 public class UserConfiguration {
 
 	@Bean
-	UserService userService(UserRepository userRepository, PasswordEncoder passwordEncoder, NotificationClient notificationClient) {
-		return new UserService(userRepository, passwordEncoder, notificationClient);
+	UserService userService(
+			UserRepository userRepository,
+			PasswordEncoder passwordEncoder,
+			NotificationClient notificationClient,
+			InactiveUserRepository inactiveUserRepository) {
+		return new UserService(userRepository, inactiveUserRepository, passwordEncoder, notificationClient);
 	}
 
 }

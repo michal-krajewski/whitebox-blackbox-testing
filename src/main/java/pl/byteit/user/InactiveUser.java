@@ -8,8 +8,8 @@ import jakarta.persistence.Table;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "inactiva_users")
+public class InactiveUser {
 
 	@Id
 	private UUID id;
@@ -21,25 +21,21 @@ public class User {
 	private String password;
 
 	@Deprecated //Hibernate only
-	User() {
+	InactiveUser() {
 	}
 
-	public User(String username, String password) {
+	public InactiveUser(String username, String password) {
 		this.id = UUID.randomUUID();
 		this.username = username;
 		this.password = password;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
 	UUID getId() {
 		return id;
+	}
+
+	User activate() {
+		return new User(username, password);
 	}
 
 }

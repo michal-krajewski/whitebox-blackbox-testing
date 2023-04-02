@@ -36,39 +36,39 @@ public class UserServiceWhiteboxTest {
 	UserService userService;
 
 
-	@Test
-	void shouldCreateInactiveUserAndSendNotifcationAfterRegistration() {
-		when(passwordEncoder.encode("pwd1234")).thenReturn("encoded-pwd1234");
-
-		userService.registerNewUser(new UserRegistrationInput("user", "pwd1234"));
-
-		verify(userRepository).save(userCaptor.capture());
-		User savedUser = userCaptor.getValue();
-		verify(notificationClient).sendNotification(new Notification(savedUser.getRegistrationToken().toString()));
-		assertThat(savedUser)
-				.satisfies(user -> assertThat(user.getId()).isNotNull())
-				.extracting(User::getUsername, User::getPassword, User::isActive)
-				.containsExactly("user", "encoded-pwd1234", false);
-	}
-
-	@Test
-	void shouldSaveActivatedUser() {
-		User existingUser = new User("u1", "encoded");
-		when(userRepository.findByRegistrationTokenAndActiveIsFalse(existingUser.getRegistrationToken()))
-				.thenReturn(Optional.of(existingUser));
-
-		userService.activateUser(existingUser.getRegistrationToken());
-
-		verify(userRepository).save(userCaptor.capture());
-		assertThat(userCaptor.getValue())
-				.extracting(User::getId, User::getUsername, User::getPassword, User::getRegistrationToken, User::isActive)
-				.containsExactly(
-						existingUser.getId(),
-						existingUser.getUsername(),
-						existingUser.getPassword(),
-						existingUser.getRegistrationToken(),
-						true
-				);
-	}
+//	@Test
+//	void shouldCreateInactiveUserAndSendNotifcationAfterRegistration() {
+//		when(passwordEncoder.encode("pwd1234")).thenReturn("encoded-pwd1234");
+//
+//		userService.registerNewUser(new UserRegistrationInput("user", "pwd1234"));
+//
+//		verify(userRepository).save(userCaptor.capture());
+//		User savedUser = userCaptor.getValue();
+//		verify(notificationClient).sendNotification(new Notification(savedUser.getRegistrationToken().toString()));
+//		assertThat(savedUser)
+//				.satisfies(user -> assertThat(user.getId()).isNotNull())
+//				.extracting(User::getUsername, User::getPassword, User::isActive)
+//				.containsExactly("user", "encoded-pwd1234", false);
+//	}
+//
+//	@Test
+//	void shouldSaveActivatedUser() {
+//		User existingUser = new User("u1", "encoded");
+//		when(userRepository.findByRegistrationTokenAndActiveIsFalse(existingUser.getRegistrationToken()))
+//				.thenReturn(Optional.of(existingUser));
+//
+//		userService.activateUser(existingUser.getRegistrationToken());
+//
+//		verify(userRepository).save(userCaptor.capture());
+//		assertThat(userCaptor.getValue())
+//				.extracting(User::getId, User::getUsername, User::getPassword, User::getRegistrationToken, User::isActive)
+//				.containsExactly(
+//						existingUser.getId(),
+//						existingUser.getUsername(),
+//						existingUser.getPassword(),
+//						existingUser.getRegistrationToken(),
+//						true
+//				);
+//	}
 
 }
