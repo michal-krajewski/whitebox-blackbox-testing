@@ -54,4 +54,12 @@ public class User {
 		return registrationToken;
 	}
 
+	UUID getId() {
+		return id;
+	}
+
+	boolean isActive() {
+		return active;
+	}
+
 }
